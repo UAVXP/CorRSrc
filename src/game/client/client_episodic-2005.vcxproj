@@ -70,6 +70,7 @@
 copy "$(TargetDir)"client.dll "d:\steam\steamapps\SourceMods\corr\bin"
 </Command>
       <Outputs>d:\steam\steamapps\SourceMods\corr\bin\client.dll;%(Outputs)</Outputs>
+      <Inputs>$(TargetPath)</Inputs>
     </CustomBuildStep>
     <ClCompile>
       <Optimization>Disabled</Optimization>
@@ -149,6 +150,7 @@ if exist "d:\steam\steamapps\SourceMods\corr\bin\client.pdb" attrib -r "d:\steam
 if exist "$(TargetDir)"client.pdb copy "$(TargetDir)"client.pdb "d:\steam\steamapps\SourceMods\corr\bin\client.pdb"
 </Command>
       <Outputs>d:\steam\steamapps\SourceMods\corr\bin\client.dll;d:\steam\steamapps\SourceMods\corr\bin\client.pdb;%(Outputs)</Outputs>
+      <Inputs>$(TargetPath)</Inputs>
     </CustomBuildStep>
     <ClCompile>
       <Optimization>MaxSpeed</Optimization>
