@@ -170,9 +170,27 @@ void C_EnvProjectedTexture::UpdateLight( bool bForceUpdate )
 //			VectorNormalize( vUp );
 		}
 	}
+/*
 	else
 	{
 		AngleVectors( GetAbsAngles(), &vForward, &vRight, &vUp );
+	}
+*/
+	else
+	{
+		// VXP: Fixing targeting
+		Vector vecToTarget;
+		QAngle vecAngles;
+		if ( m_hTargetEntity == NULL )
+		{
+			vecAngles = GetAbsAngles();
+		}
+		else
+		{
+			vecToTarget = m_hTargetEntity->GetAbsOrigin() - GetAbsOrigin();
+			VectorAngles( vecToTarget, vecAngles );
+		}
+		AngleVectors( vecAngles, &vForward, &vRight, &vUp );
 	}
 
 	state.m_fHorizontalFOVDegrees = m_flLightFOV;
@@ -190,8 +208,10 @@ void C_EnvProjectedTexture::UpdateLight( bool bForceUpdate )
 	state.m_Color[3] = 0.0f; // fixme: need to make ambient work m_flAmbient;
 	state.m_NearZ = m_flNearZ;
 	state.m_FarZ = m_flFarZ;
-	state.m_flShadowSlopeScaleDepthBias = mat_slopescaledepthbias_shadowmap.GetFloat();
-	state.m_flShadowDepthBias = mat_depthbias_shadowmap.GetFloat();
+//	state.m_flShadowSlopeScaleDepthBias = mat_slopescaledepthbias_shadowmap.GetFloat();
+//	state.m_flShadowDepthBias = mat_depthbias_shadowmap.GetFloat();
+	state.m_flShadowSlopeScaleDepthBias = 8;
+	state.m_flShadowDepthBias = 0.00001;
 	state.m_bEnableShadows = m_bEnableShadows;
 	state.m_pSpotlightTexture = materials->FindTexture( m_SpotlightTextureName, TEXTURE_GROUP_OTHER, false );
 	state.m_nSpotlightTextureFrame = m_nSpotlightTextureFrame;
@@ -221,15 +241,16 @@ void C_EnvProjectedTexture::UpdateLight( bool bForceUpdate )
 
 	g_pClientShadowMgr->SetFlashlightLightWorld( m_LightHandle, m_bLightWorld );
 
-	if ( bForceUpdate == false )
-	{
+//	if ( bForceUpdate == false )
+//	{
 		g_pClientShadowMgr->UpdateProjectedTexture( m_LightHandle, true );
-	}
+//	}
 }
 
 void C_EnvProjectedTexture::Simulate( void )
 {
-	UpdateLight( false );
+//	UpdateLight( false );
+	UpdateLight( GetMoveParent() != NULL );
 
 	BaseClass::Simulate();
 }

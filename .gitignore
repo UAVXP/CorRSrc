@@ -122,6 +122,7 @@ UpgradeLog*.XML
 mapsrc/*.prt
 mapsrc/*.log
 mapsrc/*.bsp
+mapsrc/*.vmx
 
 
 ############
