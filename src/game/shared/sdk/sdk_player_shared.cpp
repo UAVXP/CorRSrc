@@ -216,7 +216,7 @@ bool CSDKPlayer::IsSprinting( void )
 {
 	float flVelSqr = GetAbsVelocity().LengthSqr();
 
-	return m_Shared.m_bIsSprinting && ( flVelSqr > 0.5f );
+	return m_Shared.IsSprinting() && ( flVelSqr > 0.5f );
 }
 #endif // SDK_USE_SPRINTING
 
@@ -427,18 +427,14 @@ bool CSDKPlayerShared::CanChangePosition( void )
 #if defined ( SDK_USE_SPRINTING )
 void CSDKPlayerShared::SetSprinting( bool bSprinting )
 {
-	if ( bSprinting && !m_bIsSprinting )
+	if ( bSprinting && !IsSprinting())
 	{
 		StartSprinting();
 
-		// only one penalty per key press
-		if ( m_bGaveSprintPenalty == false )
-		{
-			m_flStamina -= INITIAL_SPRINT_STAMINA_PENALTY;
-			m_bGaveSprintPenalty = true;
-		}
+		// always apply this penalty as we're predicting m_bSprinting
+		m_flStamina -= INITIAL_SPRINT_STAMINA_PENALTY;
 	}
-	else if ( !bSprinting && m_bIsSprinting )
+	else if ( !bSprinting && IsSprinting() )
 	{
 		StopSprinting();
 	}
@@ -571,7 +567,7 @@ void CSDKPlayer::InitSpeeds()
 	m_Shared.m_flSprintSpeed = SDK_DEFAULT_PLAYER_SPRINTSPEED;
 	m_Shared.m_flProneSpeed = SDK_DEFAULT_PLAYER_PRONESPEED;
 	// Set the absolute max to sprint speed
-	SetMaxSpeed( m_Shared.m_flSprintSpeed ); 
+	SetMaxSpeed( m_Shared.m_flRunSpeed );
 	return;
 #endif
 #if defined ( SDK_USE_PLAYERCLASSES )
