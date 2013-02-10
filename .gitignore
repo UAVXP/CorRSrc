@@ -44,8 +44,6 @@ local.properties
 # Build results
 [Dd]ebug/
 [Rr]elease/
-[Dd]ebug_episodic/
-[Rr]elease_episodic/
 *_i.c
 *_p.c
 *.ilk
@@ -119,6 +117,10 @@ UpgradeLog*.XML
 ############
 ## Half-Life 2 Modification
 ############
+[Dd]ebug_episodic/
+[Rr]elease_episodic/
+[Dd]ebug_dx9/
+[Rr]elease_dx9/
 mapsrc/*.prt
 mapsrc/*.log
 mapsrc/*.bsp
